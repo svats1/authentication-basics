@@ -23,7 +23,7 @@ const User = mongoose.model(
 
 const app = express();
 app.set("views", __dirname);
-app.set("view engine", "ejs");
+app.set("view engine", "pug");
 
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());

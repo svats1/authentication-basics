@@ -2,5 +2,14 @@ html
   head
     title
   body
-    h1 hello world!
-    block content
+    h1 Please log in
+    form(action="/log-in", method="post")
+        label(for="username") Username
+        br
+        input(type="text", name="username", id="username")
+        br
+        label(for="password") Password
+        br
+        input(type="text", name="password", id="password")
+        br
+        button(type="submit") Log In

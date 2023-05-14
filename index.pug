@@ -4,6 +4,7 @@ html
   body
     if user
         h1 Welcome back #{user.username}!
+        a(href="/log-out") Log Out
     else 
         h1 Please log in
         form(action="/log-in", method="post")

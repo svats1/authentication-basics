@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const mongoDB =
-  "mongodb+srv://svats_dev:YsANARFmI0s5Nfso@cluster0.ye3rnlo.mongodb.net/local_library?retryWrites=true&w=majority";
+  "mongodb+srv://svats_dev:YsANARFmI0s5Nfso@cluster0.ye3rnlo.mongodb.net/top_auth_db?retryWrites=true&w=majority";
 
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
@@ -34,5 +34,17 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res) => res.render("index"));
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
+app.post("/sign-up", async (req, res, next) => {
+  try {
+    const user = new User({
+      username: req.body.username,
+      password: req.body.password,
+    });
+    const result = await user.save();
+    res.redirect("/");
+  } catch (err) {
+    return next(err);
+  }
+});
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

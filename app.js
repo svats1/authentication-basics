@@ -8,6 +8,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const env = require("dotenv").config();
+const bcrypt = require("bcryptjs");
 
 const mongoDB = `mongodb+srv://${process.env.db_username}:${process.env.db_password}@cluster0.ye3rnlo.mongodb.net/${process.env.db_name}?retryWrites=true&w=majority`;
 
@@ -71,14 +72,14 @@ app.get("/", (req, res) => res.render("index", { user: req.user }));
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
 
 app.post("/sign-up", async (req, res, next) => {
-  bcrypt.hash("somePassword", 10, async (err, hashedPassword) => {
+  bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
     if (err) {
       return next(err);
     } else {
       try {
         const user = new User({
           username: req.body.username,
-          password: req.body.password,
+          password: hashedPassword,
         });
         const result = await user.save();
         res.redirect("/");

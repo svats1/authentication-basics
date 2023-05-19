@@ -69,17 +69,24 @@ app.use(function (req, res, next) {
 
 app.get("/", (req, res) => res.render("index", { user: req.user }));
 app.get("/sign-up", (req, res) => res.render("sign-up-form"));
+
 app.post("/sign-up", async (req, res, next) => {
-  try {
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-    });
-    const result = await user.save();
-    res.redirect("/");
-  } catch (err) {
-    return next(err);
-  }
+  bcrypt.hash("somePassword", 10, async (err, hashedPassword) => {
+    if (err) {
+      return next(err);
+    } else {
+      try {
+        const user = new User({
+          username: req.body.username,
+          password: req.body.password,
+        });
+        const result = await user.save();
+        res.redirect("/");
+      } catch (err) {
+        return next(err);
+      }
+    }
+  });
 });
 
 app.post(

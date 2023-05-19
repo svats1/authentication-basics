@@ -7,9 +7,9 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const env = require("dotenv").config();
 
-const mongoDB =
-  "mongodb+srv://svats_dev:YsANARFmI0s5Nfso@cluster0.ye3rnlo.mongodb.net/top_auth_db?retryWrites=true&w=majority";
+const mongoDB = `mongodb+srv://${process.env.db_username}:${process.env.db_password}@cluster0.ye3rnlo.mongodb.net/${process.env.db_name}?retryWrites=true&w=majority`;
 
 mongoose.connect(mongoDB, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
